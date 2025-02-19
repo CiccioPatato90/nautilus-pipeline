@@ -17,15 +17,12 @@ public class LoggingHandlerWrapper<I, O> implements Handler<I, O> {
 
     @Override
     public O process(I input) {
-        String stepName = delegate.getClass().getName();
+//        String stepName = delegate.getClass().getName();
         try {
-            context.logStep("Starting step: " + stepName + " at " + LocalDateTime.now());
             O output = delegate.process(input);
             context.setIntermediateResult(output);
-            context.logStep("Completed step: " + stepName + " at " + LocalDateTime.now());
             return output;
         } catch (Exception e) {
-            context.logStep("Error in step: " + stepName + " at " + LocalDateTime.now() + " - " + e.getMessage());
             throw e;
         }
     }

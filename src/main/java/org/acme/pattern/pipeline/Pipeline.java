@@ -15,7 +15,6 @@ public class Pipeline<I, O> {
     private final Handler<I, O> currentHandler;
 
     public Pipeline(Handler<I, O> currentHandler, BaseTransactionContext baseContext) {
-//        this.currentHandler = currentHandler;
         this.baseContext = baseContext;
         this.currentHandler = new LoggingHandlerWrapper<>(currentHandler, baseContext);
     }
@@ -51,28 +50,4 @@ public class Pipeline<I, O> {
             throw e;
         }
     }
-
-//    public <K> Pipeline<I, K> addHandler(Handler<O, K> newHandler) {
-//        // Wrap the new handler to enable logging
-//        Handler<O, K> wrappedHandler = new LoggingHandlerWrapper<>(newHandler, baseContext);
-//        // Compose the handlers
-//        Handler<I, K> combinedHandler = input -> {
-//            O intermediate = currentHandler.process(input);
-//            return wrappedHandler.process(intermediate);
-//        };
-//        return new Pipeline<>(combinedHandler, baseContext);
-//    }
-//
-//    @Transactional
-//    public O execute(I input) {
-//        try {
-//            O result = currentHandler.process(input);
-//            baseContext.setIntermediateResult(result);
-//            return result;
-//        } catch (Exception e) {
-//            baseContext.setError(e);
-//            baseContext.getExecutedSteps().forEach(System.err::println);
-//            throw e;
-//        }
-//    }
 }
